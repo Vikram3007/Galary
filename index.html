@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CollegeTips Photo Gallery</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    margin: 0; padding: 20px;
+    color: #222;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #2a2a72;
+    text-transform: uppercase;
+  }
+  p.subtitle {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #555;
+    font-style: italic;
+  }
+
+  /* Filter Buttons */
+  .filters {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .filters button {
+    background: #eee;
+    border: none;
+    padding: 10px 16px;
+    margin: 0 6px 10px;
+    border-radius: 24px;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .filters button.active,
+  .filters button:hover {
+    background: #2a2a72;
+    color: #fff;
+  }
+
+  /* Gallery grid */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  /* Each gallery item */
+  .gallery-item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(42 42 114 / 0.2);
+    background: white;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover zoom effect */
+  .gallery-item:hover img {
+    transform: scale(1.1);
+  }
+
+  /* Caption overlay */
+  .caption {
+    position: absolute;
+    bottom: 0;
+    background: rgba(42, 42, 114, 0.85);
+    color: white;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .gallery-item:hover .caption {
+    opacity: 1;
+  }
+
+  /* Fullscreen modal */
+  #modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  #modal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #000;
+  }
+  #modal .close-btn {
+    position: fixed;
+    top: 20px; right: 30px;
+    font-size: 32px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    .gallery-item img {
+      height: 110px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>CollegeTips Photo Gallery</h1>
+<p class="subtitle">Showcasing the best moments from CollegeTips! Filter & Explore.</p>
+
+<div class="filters" role="group" aria-label="Gallery Categories">
+  <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+  <button class="filter-btn" data-filter="team-vibes" aria-pressed="false">Team Vibes 🤝</button>
+  <button class="filter-btn" data-filter="creative-campaigns" aria-pressed="false">Creative Campaigns 🎨</button>
+  <button class="filter-btn" data-filter="work-hard-play-hard" aria-pressed="false">Work Hard, Play Hard 🥳</button>
+  <button class="filter-btn" data-filter="behind-the-scenes" aria-pressed="false">Behind-The-Scenes 🎥</button>
+</div>
+
+<div class="gallery" aria-live="polite" aria-label="Photo gallery of CollegeTips moments">
+  <!-- Gallery items go here -->
+  <div class="gallery-item" data-category="team-vibes" tabindex="0" role="button" aria-label="Team Vibes photo">
+    <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Team celebrating success" />
+    <div class="caption">Team celebrating success</div>
+  </div>
+
+  <div class="gallery-item" data-category="creative-campaigns" tabindex="0" role="button" aria-label="Creative campaign art">
+    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Creative artwork from campaign" />
+    <div class="caption">Creative campaign artwork</div>
+  </div>
+
+  <div class="gallery-item" data-category="work-hard-play-hard" tabindex="0" role="button" aria-label="Team having fun party">
+    <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=400&q=80" alt="Team having fun party" />
+    <div class="caption">Work hard, play hard party</div>
+  </div>
+
+  <div class="gallery-item" data-category="behind-the-scenes" tabindex="0" role="button" aria-label="Behind the scenes filming">
+    <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=400&q=80" alt="Behind the scenes filming" />
+    <div class="caption">Behind the scenes filming</div>
+  </div>
+
+  <div class="gallery-item" data-category="team-vibes" tabindex="0" role="button" aria-label="Group discussion photo">
+    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80" alt="Team in group discussion" />
+    <div class="caption">Team group discussion</div>
+  </div>
+
+  <div class="gallery-item" data-category="creative-campaigns" tabindex="0" role="button" aria-label="Artistic sketching session">
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Artistic sketching session" />
+    <div class="caption">Artistic sketching session</div>
+  </div>
+
+  <div class="gallery-item" data-category="work-hard-play-hard" tabindex="0" role="button" aria-label="Outdoor team picnic">
+    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80" alt="Outdoor team picnic" />
+    <div class="caption">Outdoor team picnic</div>
+  </div>
+
+  <div class="gallery-item" data-category="behind-the-scenes" tabindex="0" role="button" aria-label="Studio equipment setup">
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Studio equipment setup" />
+    <div class="caption">Studio equipment setup</div>
+  </div>
+</div>
+
+<!-- Modal for fullscreen image -->
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-image-desc" tabindex="-1">
+  <span class="close-btn" aria-label="Close full screen view" role="button" tabindex="0">&times;</span>
+  <img src="" alt="" id="modal-img" />
+  <div id="modal-image-desc" style="color:white; text-align:center; margin-top:10px;"></div>
+</div>
+
+<script>
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modal-img');
+  const modalDesc = document.getElementById('modal-image-desc');
+  const modalClose = modal.querySelector('.close-btn');
+
+  // Filter function
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Update aria-pressed and active class
+      filterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      const filter = btn.getAttribute('data-filter');
+      galleryItems.forEach(item => {
+        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Open modal on click or keyboard enter/space
+  galleryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      openModal(item);
+    });
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(item);
+      }
+    });
+  });
+
+  function openModal(item) {
+    const img = item.querySelector('img');
+    const caption = item.querySelector('.caption').textContent;
+    modal.style.display = 'flex';
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+    modalDesc.textContent = caption;
+    modal.focus();
+  }
+
+  // Close modal
+  function closeModal() {
+    modal.style.display = 'none';
+    modalImg.src = '';
+    modalImg.alt = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modalClose.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Close modal on clicking outside the image
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Close modal on ESC key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>
